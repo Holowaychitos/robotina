@@ -8,9 +8,17 @@ var WEBPORT = 3000
 var devices = require('./config/devices')
 var PeriodicActivity = require('./lib/periodic-activity')
 
-var btUpdater = new PeriodicActivity(devices['intput_1'], function (newValue) {
-  io.emit('controlUpdate', {button: !!newValue})
-})
+var btUpdater = {
+  a: new PeriodicActivity(devices['intput_1'], function (newValue) {
+    io.emit('controlUpdate', {intput_1: !!newValue})
+  }),
+  b: new PeriodicActivity(devices['intput_2'], function (newValue) {
+    io.emit('controlUpdate', {intput_2: !!newValue})
+  }),
+  c: new PeriodicActivity(devices['intput_3'], function (newValue) {
+    io.emit('controlUpdate', {intput_3: !!newValue})
+  })
+}
 
 function getRootCallback (req, res) {
   res.sendfile('index.html')
@@ -34,19 +42,6 @@ function parseState (value) {
   return value ? 1 : 0
 }
 
-// var btState = false;
-//
-// function periodicActivity () {
-//   var newState = button.read()
-//   if (btState !== newState) {
-//     btState = newState
-//     console.log('Gpio is ' + btState)
-//     io.emit('controlUpdate', {button: !!btState})
-//   }
-//   setTimeout(periodicActivity, 100)
-// }
-
-// Crea el servidor y define el puerto en el que escucha
 http.listen(WEBPORT, function serverStart () {
   console.log('http:my-ip.com/', WEBPORT)
 })

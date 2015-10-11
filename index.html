@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+	<head>
+	  <title>Domotic Panel</title>
+	  <style>
+	    * {
+	    	border: 0;
+	    	margin: 0;
+	    	padding: 0;
+	      font-family: helvetica, monospace;
+	      color: #FF794D;
+	      font-size: 1.2em;
+	    }
+	    body {
+	      background: #FFFF9D;
+	    }
+	    .graph {
+	      height: 85vh;
+	      background: #79BD8F;
+				width: 30%;
+	    }
+	    .button {
+	      display: table-cell;
+	      height: 15vh;
+	      text-decoration: none;
+	      background: #FFFF9D;
+	      text-align: center;
+	      vertical-align: middle;
+	      width: 100vw;
+	      transition: background .5s;
+	    }
+	    .button:hover {
+	      background: #BEEB9F;
+	    }
+	  </style>
+	<script src="/socket.io/socket.io.js"></script>
+	</head>
+  <body>
+  <a href="#" class="button">No te atreves a tocarme</i></a>
+	<div class="graph"></div>
+	<script>
+		var socket = io(); // Creamos la conexion con el servidor
+
+		// Selecciona los elementos del DOM
+    var $graph = document.querySelector('.graph');
+    var $button = document.querySelector('.button');
+
+		// Evento onSensor: Crea el eventListener y nos indica cuando un
+		socket.on('sensor', function onSensorCallback(width) {
+			// var width = (value * 100) / 1023;
+      $graph.style.width= width + "%";
+		});
+
+		$button.addEventListener("click", function (){
+    	socket.emit('buttonpress', 'bu!');
+		});
+
+	</script>
+  </body>
+</html>
+
